@@ -2,6 +2,10 @@
 -- PostgreSQL database dump
 --
 
+SELECT product_name, unit_price FROM products LIMIT 5;
+
+SELECT current_database();
+
 SET statement_timeout = 0;
 SET lock_timeout = 0;
 SET client_encoding = 'UTF8';
