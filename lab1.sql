@@ -23,3 +23,10 @@ INSERT INTO tbl_kost (kost_innehaller) VALUES
 ('Veganskt'),
 ('Laktosfritt');
 
+CREATE TABLE tbl_mat_kost (
+    mat_id INT NOT NULL,
+    kost_id INT NOT NULL,
+    CONSTRAINT pk_tbl_mat_kost PRIMARY KEY (mat_id, kost_id),
+    CONSTRAINT fk_mat FOREIGN KEY (mat_id) REFERENCES tbl_mat(mat_id),
+    CONSTRAINT fk_kost FOREIGN KEY (kost_id) REFERENCES tbl_kost(kost_id)
+);
