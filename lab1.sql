@@ -99,4 +99,73 @@ WHERE title ILIKE '%Vice%' OR title ILIKE '%President%' OR title ILIKE '%Manager
 SELECT product_name, unit_price, unit_price * 1.07 AS new_price
 FROM products;
 
---9 ABORT
+--9 
+SELECT product_name, unit_price * units_in_stock AS stock_value
+FROM products;
+
+--10
+SELECT product_name
+FROM products
+WHERE units_in_stock < reorder_level;
+
+--11
+SELECT product_name
+FROM products
+WHERE units_in_stock + units_on_order < reorder_level;
+
+-- 12
+SELECT products.product_name, categories.category_name
+FROM products 
+JOIN categories ON (categories.category_id = products.category_id)
+WHERE products.product_name = 'Lakkalikööri';
+
+--13
+SELECT products.product_name, suppliers.company_name
+FROM products
+JOIN suppliers ON products.supplier_id = suppliers.supplier_id
+WHERE products.product_name = 'Gravad lax';
+
+--14 !!!!!!!!!!!! fixa denna
+SELECT products.product_name, suppliers.company_name
+FROM orders
+JOIN 
+WHERE order_details.order_id = 10249
+
+--15
+SELECT COUNT(*)
+FROM employees
+WHERE title = 'Sales Representative'
+
+--16
+SELECT SUM(order_details.quantity * order_details.unit_price)
+FROM order_details
+JOIN orders ON orders.order_id = order_details.order_id
+WHERE orders.order_date = '1996-12-12'
+
+--19
+-- Kontrollera priserna FÖRE uppdateringen
+SELECT product_id, product_name, category_id, unit_price
+FROM products
+WHERE category_id = 4;
+-- Uppdateringen av pris, EFTER
+UPDATE products
+SET unit_price = unit_price * 1.20
+WHERE category_id = 4;
+
+SELECT product_id, product_name, category_id, unit_price
+FROM products
+WHERE category_id = 4;
+
+-- 20
+-- Kontrollera priserna FÖRE uppdateringen
+SELECT products.product_id, products.product_name, products.category_id, products.unit_price
+FROM products
+JOIN suppliers ON (suppliers.supplier_id = products.supplier_id)
+WHERE suppliers.company_name = 'Tokyo Traders';
+--EFTER
+UPDATE products
+SET unit_price = unit_price * 1.1
+FROM suppliers
+WHERE products.supplier_id = suppliers.supplier_id 
+AND company_name = 'Tokyo Traders'
+
