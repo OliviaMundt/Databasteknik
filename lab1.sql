@@ -16,6 +16,7 @@ CREATE TABLE tbl_diet (
     CONSTRAINT pk_tbl_diet PRIMARY KEY (diet_id)
 );
 
+
 INSERT INTO tbl_mat (mat_matratt) VALUES
 ('Köttfärsås'), 
 ('Linsgryta'), 
@@ -167,5 +168,45 @@ UPDATE products
 SET unit_price = unit_price * 1.1
 FROM suppliers
 WHERE products.supplier_id = suppliers.supplier_id 
-AND company_name = 'Tokyo Traders'
+AND company_name = 'Tokyo Traders';
 
+SELECT products.product_id, products.product_name, suppliers.company_name, products.unit_price
+FROM products
+JOIN suppliers ON suppliers.supplier_id = products.supplier_id
+WHERE suppliers.company_name = 'Tokyo Traders';
+
+
+--3.1
+CREATE PROCEDURE spHigherPrice()
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    UPDATE products SET unit_price = unit_price * 1.05;
+END
+$$;
+
+SELECT product_name, unit_price
+FROM products
+ORDER BY product_id
+LIMIT 5;
+
+CALL spHigherPrice();
+
+SELECT product_name, unit_price
+FROM products
+ORDER BY product_id
+LIMIT 5;
+
+
+-- 3.3
+SELECT products.product_name, categories.category_name, products.unit_price
+FROM products
+JOIN categories ON products.category_id = categories.category_id;
+
+CREATE VIEW infoProduct
+AS
+SELECT products.product_name, categories.category_name, products.unit_price
+FROM products
+JOIN categories ON products.category_id = categories.category_id;
+
+SELECT * FROM infoProduct;
