@@ -18,7 +18,7 @@ CREATE TABLE tbl_diet (
 
 
 INSERT INTO tbl_mat (mat_matratt) VALUES
-('Köttfärsås'), 
+('Hemlagad Köttfärsås'), 
 ('Linsgryta'), 
 ('Kalops');
 
@@ -45,12 +45,13 @@ INSERT INTO tbl_mat_diet (mat_id, diet_id) VALUES
 
 -- Testar olika kommandon
 UPDATE tbl_mat
-SET mat_matratt = 'Hemlagad Köttfärsås'
+SET mat_matratt = 'Köttfärsås'
 WHERE mat_id = 1;
 
 SELECT * FROM tbl_diet;
 SELECT * FROM tbl_mat WHERE tbl_mat.mat_matratt = 'Linsgryta';
 
+SELECT * from tbl_mat;
 
 
 INSERT INTO tbl_mat (mat_matratt) VALUES ('Falukorv och makaroner');
@@ -59,7 +60,7 @@ INSERT INTO tbl_mat_diet (mat_id, diet_id) VALUES
 (4, 3);
 
 DELETE FROM tbl_mat
-WHERE mat_id = 4;
+WHERE mat_id = 7;
 
 -- testar referensintegriteten
 INSERT INTO tbl_mat_diet (mat_id, diet_id) VALUES (999, 1);
@@ -72,10 +73,10 @@ SELECT last_name, first_name FROM employees;
 --2
 SELECT home_phone FROM employees WHERE title = 'Vice President, Sales';
 
---3 FIXAR EJ DENNA, FRÅGA OM HJÄLP
+--3 ---
 SELECT company_name, contact_name, contact_title
 FROM customers
-WHERE company_name = 'Svensk sjöföda AB';
+WHERE company_name = 'Svensk Sjöföda AB';
 
 --4
 SELECT first_name, last_name, birth_date
@@ -126,7 +127,7 @@ FROM products
 JOIN suppliers ON products.supplier_id = suppliers.supplier_id
 WHERE products.product_name = 'Gravad lax';
 
---14 !!!!!!!!!!!! fixa denna
+--14 ---
 SELECT products.product_name, suppliers.company_name
 FROM orders
 JOIN 
@@ -210,3 +211,48 @@ FROM products
 JOIN categories ON products.category_id = categories.category_id;
 
 SELECT * FROM infoProduct;
+
+-- 3.5
+-- 1
+SELECT product_name, unit_price 
+FROM products 
+WHERE product_name IN ('Chai', 'Chang');
+
+BEGIN TRANSACTION;
+    UPDATE products
+    SET unit_price = unit_price + 10
+    WHERE product_name IN ('Chai', 'Chang');
+
+    SELECT product_name, unit_price 
+    FROM products
+    WHERE product_name IN ('Chai', 'Chang');
+
+    ROLLBACK;
+
+    SELECT product_name, unit_price 
+    FROM products 
+    WHERE product_name IN ('Chai', 'Chang');
+
+-- 2
+
+SELECT product_name, unit_price 
+FROM products 
+WHERE product_name IN ('Aniseed Syrup', 'Ikura');
+
+BEGIN TRANSACTION;
+    UPDATE products
+    SET unit_price = unit_price + 10
+    WHERE product_name IN ('Aniseed Syrup', 'Ikura');
+
+    UPDATE products
+    SET unit_prce = unit_price + 10
+    WHERE product_name IN ('Aniseed Syrup', 'Ikuro');SELECT product_name, unit_price 
+    
+    FROM products 
+    WHERE product_name IN ('Aniseed Syrup', 'Ikura');
+    
+    ROLLBACK;
+
+SELECT product_name, unit_price 
+FROM products 
+WHERE product_name IN ('Aniseed Syrup', 'Ikura');
